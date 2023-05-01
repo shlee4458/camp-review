@@ -19,10 +19,8 @@ router.post('/register', catchAsync(async (req, res) => {
                 return next(err)
             }
             req.flash('success', 'Welcome to the Yish Camp!')
-            res.redirect('/campgrounds')
+            return res.redirect('/campgrounds')
         })
-        req.flash('success', "Welcome to Yish Camp")
-        res.redirect('/campgrounds')
     } catch(e) {
         req.flash('error', e.message)
         res.redirect('register')
