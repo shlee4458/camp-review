@@ -26,7 +26,6 @@ module.exports.createCampground = async (req, res, next) => {
     campground.author = req.user._id;
     campground.images = req.files.map(f => ({url: f.path, filename: f.filename}))
     await campground.save();
-    console.log(campground.images)
     req.flash('success', "Successfully made a new camp!")
     res.redirect(`/campgrounds/${campground._id}`)
 }
