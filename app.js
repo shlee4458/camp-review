@@ -1,4 +1,7 @@
-const dotenv = require('dotenv').config();
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
@@ -12,7 +15,6 @@ const ExpressError = require('./utils/expresserror')
 const {campgroundSchema, reviewSchema} = require('./schemas')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
-
 
 // establish database connection
 const mongoose = require("mongoose")
@@ -87,7 +89,6 @@ app.get('/fakeUser', async (req, res) => {
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes)
-
 
 app.get('/', (req, res) => {
     res.render('home')

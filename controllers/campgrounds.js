@@ -1,4 +1,8 @@
 const Campground = require('../models/campground')
+const { cloudinary } = require("../cloudinary");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapboxToken = process.env.MAPBOX_TOKEN
+const geoCoder = mbxGeocoding({accessToken: mapboxToken})
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
@@ -12,10 +16,17 @@ module.exports.renderNewForm = async (req, res) => {
 module.exports.createCampground = async (req, res, next) => {
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     // create a schema that is used to validate the req.body data
+    const geoData = await geoCoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
+
     const campground = new Campground(req.body.campground) // urlencoded extended will change the name in view campground[location] as a nested JSON
+    campground.geometry = geoData.body.features[0].geometry
     campground.author = req.user._id;
-    console.log(req)
+    campground.images = req.files.map(f => ({url: f.path, filename: f.filename}))
     await campground.save();
+    console.log(campground.images)
     req.flash('success', "Successfully made a new camp!")
     res.redirect(`/campgrounds/${campground._id}`)
 }
@@ -41,8 +52,18 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateCampground = async (req, res) => {
     const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground })
-    req.flash('success', 'Successfully updated campground')
+    console.log(req.body);
+    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    campground.images.push(...imgs);
+    await campground.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
+    req.flash('success', 'Successfully updated campground!');
     res.redirect(`/campgrounds/${campground._id}`)
 }
 
