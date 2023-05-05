@@ -8,6 +8,8 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const session = require('express-session')
+const MongoStore = require('connect-mongo')
+
 const flash = require('connect-flash')
 const Joi = require('joi');
 const catchAsync = require('./utils/catchAsync');
@@ -15,6 +17,12 @@ const ExpressError = require('./utils/expresserror')
 const {campgroundSchema, reviewSchema} = require('./schemas')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const mongoSanitize = require('express-mongo-sanitize'); // mongo injection security
+
+// define routes
+const campgroundRoutes = require('./routes/campgrounds')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users')
 
 // establish database connection
 const mongoose = require("mongoose")
@@ -22,12 +30,11 @@ const Campground = require('./models/campground');
 const Review = require('./models/reviews')
 const User = require('./models/users')
 
-const campgroundRoutes = require('./routes/campgrounds')
-const reviewRoutes = require('./routes/reviews')
-const userRoutes = require('./routes/users')
+const dbUrl = process.env.MONGO_URI
+const sessionSecret = process.env.SESSION_SECRET;
 
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -37,6 +44,14 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
 });
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 25 * 60 * 60,
+    crypto: {
+        secret: sessionSecret
+    }
+})
 
 const app = express();
 
@@ -51,10 +66,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(morgan('tiny'))
+app.use(mongoSanitize())
 
 // session
 const sessionConfig = {
-    secret: "updatethis",
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
     cookie: {
