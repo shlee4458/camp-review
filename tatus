@@ -1,0 +1,65 @@
+[33mcommit 025278b547a6432ff892b309a7c2a501e5d1edcf[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31mheroku/main[m[33m)[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sat May 6 14:42:54 2023 -0400
+
+    fix: filename
+
+[33mcommit 69969738d7ceaa39dcd5e1a1060d31ff3c11605c[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sat May 6 14:36:13 2023 -0400
+
+    fix: script
+
+[33mcommit fa151fdac9e25f3a16fbfc30a7a61e2161f850a9[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sat May 6 14:33:06 2023 -0400
+
+    add: start script and change port
+
+[33mcommit e5e78e5d29e99e86f7320a93dda2ff2c501d32a6[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: yish <shlee4458@gmail.com>
+Date:   Thu May 4 22:47:18 2023 -0400
+
+    add: session store and security
+
+[33mcommit eb41cde841efaddff2b47d19fce5ba934fa859a1[m
+Author: yish <shlee4458@gmail.com>
+Date:   Wed May 3 16:24:07 2023 -0400
+
+    add: cluster map
+
+[33mcommit f28bcb732d29d7edaac538fd9e990a06a32e7524[m
+Author: yish <shlee4458@gmail.com>
+Date:   Tue May 2 23:47:43 2023 -0400
+
+    add: map
+
+[33mcommit f9a0b8746273c8cecc28b348e93ed32d525d2e40[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sun Apr 30 21:48:40 2023 -0400
+
+    refactor: move route logic to controller file
+
+[33mcommit e152e680fe09ddc77d97ae0e96c7934dc3601e8d[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sun Apr 30 21:08:43 2023 -0400
+
+    add: authorization for edit and delete
+
+[33mcommit cff1c7fd9188537163fa428e07572d0ec3da4786[m
+Author: yish <shlee4458@gmail.com>
+Date:   Fri Apr 28 22:10:26 2023 -0400
+
+    add: authentication
+
+[33mcommit ccce55668c9f3cd6019adfaef73fec878d8880a2[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sun Apr 23 21:48:17 2023 -0400
+
+    fix: security
+
+[33mcommit 57bb5365a7c76f057ec74fc40f57e07157625a64[m
+Author: yish <shlee4458@gmail.com>
+Date:   Sun Apr 23 21:44:04 2023 -0400
+
+    add: CRUD operations
