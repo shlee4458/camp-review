@@ -12,7 +12,7 @@ const MongoStore = require('connect-mongo')
 
 const flash = require('connect-flash')
 const Joi = require('joi');
-const catchAsync = require('./utils/catchAsync');
+const catchAsync = require('./utils/catchasync');
 const ExpressError = require('./utils/expresserror')
 const {campgroundSchema, reviewSchema} = require('./schemas')
 const passport = require('passport')
